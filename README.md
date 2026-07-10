@@ -19,10 +19,11 @@ description: "一句话摘要"
 
 ## 本地预览
 
+本地预览建议使用 Ruby 3.1 或更高版本；仅在线发布不需要在电脑上安装 Jekyll。
+
 ```bash
 bundle install
 bundle exec jekyll serve --baseurl /blog
 ```
 
 访问 `http://127.0.0.1:4000/blog/`。
-
