@@ -1,0 +1,57 @@
+---
+layout: default
+---
+
+<section class="hero">
+  <div class="hero-index" aria-hidden="true">01—∞</div>
+  <div class="hero-copy">
+    <p class="eyebrow">A LIVING INDEX OF PRACTICE</p>
+    <h1>问题会过期，<br><em>方法不会。</em></h1>
+    <p class="hero-intro">这里收集经过验证、能够复现的工程实践。少一点结论堆砌，多一点判断过程。</p>
+  </div>
+  <div class="hero-stamp" aria-hidden="true">
+    <span>持续记录</span>
+    <strong>FIELD<br>NOTES</strong>
+  </div>
+</section>
+
+{% assign articles = site.pages | where_exp: "item", "item.tags" | sort: "date" | reverse %}
+
+<section class="catalog" aria-labelledby="catalog-title">
+  <div class="catalog-head">
+    <div>
+      <p class="eyebrow">ARCHIVE / {{ articles.size | prepend: '0' | slice: -2, 2 }}</p>
+      <h2 id="catalog-title">全部文章</h2>
+    </div>
+    <label class="search-box">
+      <span class="sr-only">搜索文章</span>
+      <input id="article-search" type="search" placeholder="搜索标题、摘要或标签…" autocomplete="off">
+      <kbd>/</kbd>
+    </label>
+  </div>
+
+  <div class="article-list" id="article-list">
+    {% for article in articles %}
+      <article class="article-card" data-search="{{ article.title }} {{ article.description }} {{ article.tags | join: ' ' }}">
+        <a class="card-link" href="{{ article.url | relative_url }}" aria-label="阅读《{{ article.title }}》"></a>
+        <div class="card-number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+        <div class="card-body">
+          <div class="card-meta">
+            <time datetime="{{ article.date | date_to_xmlschema }}">{{ article.date | date: '%Y.%m.%d' }}</time>
+            <span>{{ article.content | strip_html | number_of_words }} 字</span>
+          </div>
+          <h3>{{ article.title }}</h3>
+          <p>{{ article.description | default: article.excerpt | strip_html | truncate: 110 }}</p>
+          <div class="tags" aria-label="文章标签">
+            {% for tag in article.tags %}<span>{{ tag }}</span>{% endfor %}
+          </div>
+        </div>
+        <div class="card-arrow" aria-hidden="true">↗</div>
+      </article>
+    {% else %}
+      <div class="empty-state">第一篇手记正在路上。</div>
+    {% endfor %}
+  </div>
+  <p class="no-results" id="no-results" hidden>没有找到匹配的文章，换个关键词试试。</p>
+</section>
+

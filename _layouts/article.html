@@ -1,0 +1,33 @@
+---
+layout: default
+---
+
+<article class="post-shell">
+  <header class="post-header">
+    <a class="back-link" href="{{ '/' | relative_url }}">← 返回全部文章</a>
+    <div class="post-kicker">
+      <span>FIELD NOTE</span>
+      {% if page.date %}<time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y.%m.%d' }}</time>{% endif %}
+    </div>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}<p class="post-deck">{{ page.description }}</p>{% endif %}
+    {% if page.tags %}
+      <div class="tags post-tags">{% for tag in page.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+    {% endif %}
+  </header>
+
+  <div class="post-grid">
+    <aside class="toc-panel">
+      <p class="toc-label">本页目录</p>
+      <nav id="toc" aria-label="文章目录"></nav>
+    </aside>
+    <div class="post-content" id="post-content">{{ content }}</div>
+  </div>
+
+  <footer class="post-end">
+    <span aria-hidden="true">※</span>
+    <p>记录至此。愿这份经验能帮你少走一点弯路。</p>
+    <a href="{{ '/' | relative_url }}">继续阅读其他文章</a>
+  </footer>
+</article>
+

@@ -1,0 +1,25 @@
+title: "守拙手记"
+description: "记录可复现的工程经验、网络排障与开发实践"
+url: "https://shouzhuoshouzhuo.github.io"
+baseurl: "/blog"
+lang: "zh-CN"
+timezone: "Asia/Shanghai"
+author: "shouzhuoshouzhuo"
+
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: article
+
+exclude:
+  - FlClash-内网域名分流与-DNS-配置实战.md
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
