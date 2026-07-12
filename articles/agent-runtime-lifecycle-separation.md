@@ -13,6 +13,10 @@ primary_topic: ai-agents
 topics:
   - ai-agents
   - engineering-practice
+styles:
+  - /assets/css/agent-runtime-lab.css
+scripts:
+  - /assets/js/agent-runtime-lab.js
 published: true
 ---
 
@@ -237,6 +241,75 @@ Runtime → Supervisor
 执行结果可能是正常结果，也可能是异常或对取消的响应。它不是最终生命周期状态；Supervisor 需要结合自己的截止时间和取消原因完成最后分类。
 
 ## 七、执行结果如何转换成生命周期状态
+
+下面这个小实验把两类信息并排展示：Runtime 产生的是“执行事实”，例如进度、结果和异常；Supervisor 才把这些事实与截止时间、用户意图结合，写入唯一的 `TaskRecord`。选择一种结局，可以观察消息如何越过边界，以及生命周期状态在哪里变化。
+
+<section class="runtime-lab" data-runtime-lab aria-labelledby="runtime-lab-title">
+  <div class="runtime-lab__header">
+    <div>
+      <p class="runtime-lab__eyebrow">交互实验</p>
+      <p class="runtime-lab__title" id="runtime-lab-title"><strong>从执行事实到生命周期状态</strong></p>
+    </div>
+    <p class="runtime-lab__hint">约每 500ms 推进一步；切换场景会重新开始。</p>
+  </div>
+
+  <div class="runtime-lab__controls" role="group" aria-label="选择任务结局">
+    <button type="button" data-scenario="success" aria-pressed="false">成功</button>
+    <button type="button" data-scenario="timeout" aria-pressed="false">总超时</button>
+    <button type="button" data-scenario="cancel" aria-pressed="false">用户取消</button>
+    <button type="button" data-scenario="error" aria-pressed="false">Runtime 异常</button>
+  </div>
+
+  <div class="runtime-lab__planes">
+    <section class="runtime-lab__plane runtime-lab__plane--control" data-node="control" aria-label="控制侧">
+      <p class="runtime-lab__plane-tag">Control Plane</p>
+      <p class="runtime-lab__plane-title"><strong>Lifecycle Supervisor</strong></p>
+      <p>接收执行事实，结合截止时间和用户意图，决定唯一终态。</p>
+      <div class="runtime-lab__triggers" aria-label="控制侧策略输入">
+        <span data-event="deadline">Deadline</span>
+        <span data-event="user-cancel">User Cancel</span>
+      </div>
+      <div class="runtime-lab__record" data-node="record">
+        <span>唯一状态所有者 · TaskRecord</span>
+        <strong data-task-status>PENDING</strong>
+        <dl>
+          <div><dt>result</dt><dd data-task-result>—</dd></div>
+          <div><dt>error</dt><dd data-task-error>—</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="runtime-lab__plane runtime-lab__plane--bridge" data-node="bridge" aria-label="消息桥">
+      <p class="runtime-lab__plane-tag">Message Bridge</p>
+      <p class="runtime-lab__plane-title"><strong>跨边界消息</strong></p>
+      <div class="runtime-lab__events" aria-label="可能经过消息桥的消息">
+        <span data-event="task">TaskSpec →</span>
+        <span data-event="cancel">Cancellation →</span>
+        <span data-event="progress">← ProgressEvent</span>
+        <span data-event="result">← TaskResult</span>
+        <span data-event="exception">← Exception</span>
+      </div>
+      <p class="runtime-lab__legend"><span>→ 控制命令</span><span>← 执行事实</span></p>
+    </section>
+
+    <section class="runtime-lab__plane runtime-lab__plane--runtime" data-node="runtime" aria-label="执行侧">
+      <p class="runtime-lab__plane-tag">Execution Plane</p>
+      <p class="runtime-lab__plane-title"><strong>Agent Runtime</strong></p>
+      <p>运行 Agent 工作流、模型与工具；只返回事件、结果或异常。</p>
+      <div class="runtime-lab__workflow" data-node="workflow">
+        <span>Agent workflow</span>
+        <small>LLM · Tools · Context</small>
+      </div>
+      <p class="runtime-lab__boundary">不直接修改 TaskRecord</p>
+    </section>
+  </div>
+
+  <div class="runtime-lab__readout">
+    <span class="runtime-lab__pulse" aria-hidden="true"></span>
+    <p data-runtime-lab-live aria-live="polite">选择一个场景，观察状态迁移。</p>
+  </div>
+  <noscript><p class="runtime-lab__noscript">JavaScript 已关闭。下方状态机、伪代码与文字仍完整说明四条转换路径。</p></noscript>
+</section>
 
 Supervisor 可以使用一个集中式的控制结构完成转换：
 

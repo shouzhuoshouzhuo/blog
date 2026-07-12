@@ -1,0 +1,156 @@
+.runtime-lab {
+  --lab-control: var(--accent);
+  --lab-runtime: #b34f7d;
+  --lab-bridge: #208f82;
+  margin: 2rem 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel);
+  box-shadow: 0 14px 40px rgb(0 0 0 / 6%);
+}
+
+.runtime-lab__header,
+.runtime-lab__readout,
+.runtime-lab__legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.runtime-lab__header p,
+.runtime-lab__plane p,
+.runtime-lab__readout p { margin: 0; }
+
+.runtime-lab__eyebrow,
+.runtime-lab__plane-tag {
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.runtime-lab__title { font-size: clamp(1.05rem, 2vw, 1.3rem); }
+.runtime-lab__hint { color: var(--muted); font-size: .82rem; text-align: right; }
+
+.runtime-lab__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  margin: 1.2rem 0;
+}
+
+.runtime-lab__controls button {
+  appearance: none;
+  padding: .55rem .85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--paper);
+  font: inherit;
+  font-size: .86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease, color .2s ease, transform .2s ease;
+}
+
+.runtime-lab__controls button:hover { transform: translateY(-1px); }
+.runtime-lab__controls button:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 2px; }
+.runtime-lab__controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--paper); background: var(--accent); }
+
+.runtime-lab__planes {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(160px, .8fr) minmax(0, 1.1fr);
+  gap: .8rem;
+}
+
+.runtime-lab__plane {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--lab-bridge);
+  border-radius: 13px;
+  background: var(--paper);
+  transition: box-shadow .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+.runtime-lab__plane--control { border-top-color: var(--lab-control); }
+.runtime-lab__plane--runtime { border-top-color: var(--lab-runtime); }
+.runtime-lab__plane.is-active { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 17%, transparent); transform: translateY(-2px); }
+.runtime-lab__plane-title { margin: .2rem 0 .55rem !important; }
+.runtime-lab__plane > p:not(.runtime-lab__plane-tag):not(.runtime-lab__plane-title):not(.runtime-lab__boundary) { color: var(--muted); font-size: .82rem; line-height: 1.55; }
+
+.runtime-lab__record,
+.runtime-lab__workflow {
+  margin-top: .9rem;
+  padding: .85rem;
+  border-radius: 10px;
+  background: var(--code);
+}
+
+.runtime-lab__record > span,
+.runtime-lab__workflow > span { display: block; color: var(--muted); font-size: .75rem; }
+.runtime-lab__record > strong { display: block; margin: .3rem 0 .65rem; color: var(--lab-control); font-family: var(--mono, ui-monospace, monospace); font-size: 1.05rem; overflow-wrap: anywhere; }
+.runtime-lab__record.is-active { box-shadow: inset 0 0 0 2px var(--lab-control); }
+.runtime-lab__record dl { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin: 0; }
+.runtime-lab__record dl div { min-width: 0; }
+.runtime-lab__record dt { color: var(--muted); font: .68rem var(--mono, ui-monospace, monospace); }
+.runtime-lab__record dd { margin: .15rem 0 0; font-size: .75rem; overflow-wrap: anywhere; }
+
+.runtime-lab__workflow { text-align: center; }
+.runtime-lab__workflow small { display: block; margin-top: .35rem; color: var(--muted); }
+.runtime-lab__workflow.is-active { box-shadow: inset 0 0 0 2px var(--lab-runtime); }
+.runtime-lab__boundary { margin-top: .75rem !important; color: var(--lab-runtime); font-size: .76rem; font-weight: 750; text-align: center; }
+
+.runtime-lab__events { display: grid; gap: .45rem; margin-top: .9rem; }
+.runtime-lab__triggers { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .8rem; }
+.runtime-lab__triggers span,
+.runtime-lab__events span {
+  padding: .45rem .55rem;
+  border: 1px dashed var(--line);
+  border-radius: 7px;
+  color: var(--muted);
+  background: var(--code);
+  font: .72rem var(--mono, ui-monospace, monospace);
+  overflow-wrap: anywhere;
+  transition: color .2s ease, border-color .2s ease, background .2s ease, transform .2s ease;
+}
+.runtime-lab__triggers span { border-style: solid; font-size: .68rem; }
+.runtime-lab__triggers span.is-active { border-color: var(--lab-control); color: var(--ink); background: color-mix(in srgb, var(--lab-control) 13%, var(--paper)); transform: scale(1.025); }
+.runtime-lab__events span.is-active { border-style: solid; border-color: var(--lab-bridge); color: var(--ink); background: color-mix(in srgb, var(--lab-bridge) 13%, var(--paper)); transform: scale(1.025); }
+.runtime-lab__legend { margin-top: .7rem !important; color: var(--muted); font-size: .65rem; }
+
+.runtime-lab__readout {
+  justify-content: flex-start;
+  margin-top: .9rem;
+  padding: .75rem .85rem;
+  border-radius: 10px;
+  background: var(--code);
+  font-size: .84rem;
+}
+.runtime-lab__pulse { width: .65rem; height: .65rem; flex: 0 0 auto; border-radius: 50%; background: var(--muted); }
+.runtime-lab.is-running .runtime-lab__pulse { background: var(--lab-bridge); box-shadow: 0 0 0 5px color-mix(in srgb, var(--lab-bridge) 18%, transparent); }
+.runtime-lab__noscript { margin: .8rem 0 0; color: var(--muted); font-size: .82rem; }
+
+@media (max-width: 760px) {
+  .runtime-lab__planes { grid-template-columns: 1fr; }
+  .runtime-lab__plane--bridge { order: 2; }
+  .runtime-lab__plane--runtime { order: 3; }
+  .runtime-lab__events { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 420px) {
+  .runtime-lab { padding: .85rem; border-radius: 13px; }
+  .runtime-lab__header { align-items: flex-start; flex-direction: column; }
+  .runtime-lab__hint { text-align: left; }
+  .runtime-lab__controls { display: grid; grid-template-columns: 1fr 1fr; }
+  .runtime-lab__controls button { width: 100%; }
+  .runtime-lab__events { grid-template-columns: 1fr; }
+  .runtime-lab__record dl { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .runtime-lab *, .runtime-lab *::before, .runtime-lab *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}

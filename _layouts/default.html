@@ -8,6 +8,9 @@
     <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
     <link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml">
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    {% for stylesheet in page.styles %}
+    <link rel="stylesheet" href="{{ stylesheet | relative_url }}">
+    {% endfor %}
   </head>
   <body>
     <div class="paper-noise" aria-hidden="true"></div>
@@ -37,5 +40,8 @@
       <p class="footer-meta">© {{ 'now' | date: '%Y' }} {{ site.author }} · Built with Jekyll & GitHub Pages</p>
     </footer>
     <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
+    {% for script in page.scripts %}
+    <script src="{{ script | relative_url }}" defer></script>
+    {% endfor %}
   </body>
 </html>
