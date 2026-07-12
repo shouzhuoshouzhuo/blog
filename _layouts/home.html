@@ -15,6 +15,53 @@ layout: default
   </div>
 </section>
 
+{% assign articles = site.pages | where_exp: "item", "item.tags" | sort: "date" | reverse %}
+
+<section class="topic-shelf" aria-labelledby="topic-shelf-title">
+  <div class="topic-shelf-head">
+    <div>
+      <p class="eyebrow">EDITORIAL DESKS / 04</p>
+      <h2 id="topic-shelf-title">主题专题架</h2>
+    </div>
+    <p>沿着一个问题持续深挖，<br>直到经验长成方法。</p>
+  </div>
+
+  <div class="topic-grid">
+    {% for topic in site.data.topics %}
+      {% assign primary_count = 0 %}
+      {% for article in articles %}
+        {% if article.primary_topic == topic.id %}{% assign primary_count = primary_count | plus: 1 %}{% endif %}
+      {% endfor %}
+      <article class="topic-card topic-card--{{ forloop.index }}">
+        <div class="topic-card-top">
+          <span class="topic-card-number">{{ topic.number }}</span>
+          <span class="topic-card-eyebrow">{{ topic.eyebrow }}</span>
+          <span class="topic-card-count">{{ primary_count }} 篇主归档</span>
+        </div>
+        <div class="topic-card-main">
+          <span class="topic-card-mark" aria-hidden="true">{{ topic.mark }}</span>
+          <div>
+            <h3><a href="{{ '/topics/' | append: topic.id | append: '/' | relative_url }}">{{ topic.title }}</a></h3>
+            <p>{{ topic.statement }}</p>
+          </div>
+        </div>
+        <div class="topic-card-notes">
+          {% assign shown = 0 %}
+          {% for article in articles %}
+            {% if article.primary_topic == topic.id and shown < 2 %}
+              <a href="{{ article.url | relative_url }}"><time>{{ article.date | date: '%m.%d' }}</time><span>{{ article.title }}</span></a>
+              {% assign shown = shown | plus: 1 %}
+            {% endif %}
+          {% endfor %}
+          {% if shown == 0 %}<span class="topic-awaiting">等待第一篇手记</span>{% endif %}
+        </div>
+        <a class="topic-card-enter" href="{{ '/topics/' | append: topic.id | append: '/' | relative_url }}" aria-label="进入{{ topic.title }}主题">进入主题 <span aria-hidden="true">↗</span></a>
+      </article>
+    {% endfor %}
+  </div>
+  <a class="topic-index-link" href="{{ '/topics/' | relative_url }}">查看完整主题索引 <span aria-hidden="true">→</span></a>
+</section>
+
 <section class="skill-feature" aria-labelledby="skill-feature-title">
   <div class="skill-feature-head">
     <p class="eyebrow">PERSONAL TOOLKIT / 01</p>
@@ -32,8 +79,6 @@ layout: default
   </a>
 </section>
 
-{% assign articles = site.pages | where_exp: "item", "item.tags" | sort: "date" | reverse %}
-
 <section class="catalog" aria-labelledby="catalog-title">
   <div class="catalog-head">
     <div>
@@ -49,13 +94,15 @@ layout: default
 
   <div class="article-list" id="article-list">
     {% for article in articles %}
-      <article class="article-card" data-search="{{ article.title }} {{ article.description }} {{ article.tags | join: ' ' }}">
+      {% capture topic_names %}{% for topic in site.data.topics %}{% if article.topics contains topic.id %} {{ topic.title }}{% endif %}{% endfor %}{% endcapture %}
+      <article class="article-card" data-search="{{ article.title }} {{ article.description }} {{ article.tags | join: ' ' }} {{ topic_names | strip }}">
         <a class="card-link" href="{{ article.url | relative_url }}" aria-label="阅读《{{ article.title }}》"></a>
         <div class="card-number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
         <div class="card-body">
           <div class="card-meta">
             <time datetime="{{ article.date | date_to_xmlschema }}">{{ article.date | date: '%Y.%m.%d' }}</time>
             <span>{{ article.content | strip_html | number_of_words }} 字</span>
+            {% for topic in site.data.topics %}{% if topic.id == article.primary_topic %}<a class="card-topic" href="{{ '/topics/' | append: topic.id | append: '/' | relative_url }}">{{ topic.title }}</a>{% endif %}{% endfor %}
           </div>
           <h3>{{ article.title }}</h3>
           <p>{{ article.description | default: article.excerpt | strip_html | truncate: 110 }}</p>

@@ -1,0 +1,84 @@
+---
+layout: default
+---
+
+{% assign topic_matches = site.data.topics | where: "id", page.topic_id %}
+{% assign topic = topic_matches | first %}
+{% assign articles = site.pages | where_exp: "item", "item.tags" | sort: "date" | reverse %}
+{% assign topic_count = 0 %}
+{% assign featured_found = false %}
+{% for article in articles %}
+  {% if article.topics contains page.topic_id %}
+    {% assign topic_count = topic_count | plus: 1 %}
+    {% unless featured_found %}{% assign featured = article %}{% assign featured_found = true %}{% endunless %}
+  {% endif %}
+{% endfor %}
+
+<article class="topic-page">
+  <header class="topic-page-hero">
+    <a class="back-link" href="{{ '/topics/' | relative_url }}">← 返回主题索引</a>
+    <div class="topic-page-hero-grid">
+      <div>
+        <p class="eyebrow">DESK {{ topic.number }} / {{ topic.eyebrow }}</p>
+        <h1>{{ topic.title }}</h1>
+        <p class="topic-page-statement">{{ topic.statement }}</p>
+        <p class="topic-page-description">{{ topic.description }}</p>
+      </div>
+      <div class="topic-page-seal" aria-hidden="true"><span>{{ topic.number }}</span><strong>{{ topic.mark }}</strong><small>{{ topic_count }} NOTES</small></div>
+    </div>
+  </header>
+
+  {% if featured %}
+    <section class="topic-featured" aria-labelledby="featured-title">
+      <div class="topic-featured-label"><span>FEATURED</span><small>本主题最新手记</small></div>
+      <div class="topic-featured-body">
+        <div class="card-meta">
+          <time datetime="{{ featured.date | date_to_xmlschema }}">{{ featured.date | date: '%Y.%m.%d' }}</time>
+          <span>{{ featured.content | strip_html | number_of_words }} 字</span>
+        </div>
+        <h2 id="featured-title"><a href="{{ featured.url | relative_url }}">{{ featured.title }}</a></h2>
+        <p>{{ featured.description | default: featured.excerpt | strip_html | truncate: 160 }}</p>
+        <div class="tags">{% for tag in featured.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+      </div>
+      <a class="topic-featured-arrow" href="{{ featured.url | relative_url }}" aria-label="阅读《{{ featured.title }}》">↗</a>
+    </section>
+
+    <section class="topic-archive" aria-labelledby="topic-archive-title">
+      <div class="topic-archive-head">
+        <p class="eyebrow">ARCHIVE / {{ topic_count | prepend: '0' | slice: -2, 2 }}</p>
+        <h2 id="topic-archive-title">主题档案</h2>
+      </div>
+      <div class="topic-archive-list">
+        {% assign skipped_featured = false %}
+        {% assign remaining_count = 0 %}
+        {% for article in articles %}
+          {% if article.topics contains page.topic_id %}
+            {% unless skipped_featured %}
+              {% assign skipped_featured = true %}
+            {% else %}
+              {% assign remaining_count = remaining_count | plus: 1 %}
+              <article>
+                <time datetime="{{ article.date | date_to_xmlschema }}">{{ article.date | date: '%Y.%m.%d' }}</time>
+                <div><h3><a href="{{ article.url | relative_url }}">{{ article.title }}</a></h3><p>{{ article.description }}</p></div>
+                <span aria-hidden="true">→</span>
+              </article>
+            {% endunless %}
+          {% endif %}
+        {% endfor %}
+        {% if remaining_count == 0 %}<p class="topic-single-note">更多手记正在整理中。</p>{% endif %}
+      </div>
+    </section>
+  {% else %}
+    <section class="topic-empty">
+      <span aria-hidden="true">{{ topic.mark }}</span>
+      <h2>等待第一篇手记</h2>
+      <p>这个主题已经留好位置，下一次值得沉淀的实践会从这里开始。</p>
+      <a href="{{ '/' | relative_url }}">返回全部文章</a>
+    </section>
+  {% endif %}
+
+  <nav class="topic-neighbors" aria-label="其他主题">
+    <p class="eyebrow">OTHER DESKS</p>
+    <div>{% for other in site.data.topics %}{% unless other.id == page.topic_id %}<a href="{{ '/topics/' | append: other.id | append: '/' | relative_url }}"><span>{{ other.mark }}</span>{{ other.title }}</a>{% endunless %}{% endfor %}</div>
+  </nav>
+</article>

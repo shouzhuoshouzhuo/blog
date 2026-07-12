@@ -8,6 +8,10 @@ tags:
   - TUN
   - 网络排障
 description: "一套可复用、可验证的 FlClash 内部域名直连与分流配置方法。"
+primary_topic: network-systems
+topics:
+  - network-systems
+  - engineering-practice
 ---
 
 # 代理与公司网络并行：FlClash 域名分流和 DNS 配置指南

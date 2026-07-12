@@ -12,8 +12,16 @@ title: "文章标题"
 date: 2026-07-10
 tags: [网络, 排障]
 description: "一句话摘要"
+primary_topic: network-systems
+topics: [network-systems, engineering-practice]
 ---
 ```
+
+- `primary_topic` 决定文章在主页哪个主题下出现，只填写一个。
+- `topics` 决定文章进入哪些主题详情页，可以填写多个。
+- `tags` 用于技术关键词和搜索，不参与主题归档。
+
+当前主题 ID：`network-systems`、`ai-agents`、`engineering-practice`、`creation-tools`。
 
 提交并推送到 `main` 分支后，GitHub Actions 会自动构建和发布。
 

@@ -20,9 +20,10 @@
         </span>
       </a>
       <nav class="site-nav" aria-label="主导航">
-        <a href="{{ '/' | relative_url }}">文章</a>
-        <a href="{{ '/skills/' | relative_url }}">Skills</a>
-        <a href="{{ '/about/' | relative_url }}">关于</a>
+        <a class="nav-articles" href="{{ '/' | relative_url }}">文章</a>
+        <a class="nav-topics" href="{{ '/topics/' | relative_url }}">主题</a>
+        <a class="nav-skills" href="{{ '/skills/' | relative_url }}">Skills</a>
+        <a class="nav-about" href="{{ '/about/' | relative_url }}">关于</a>
         <button class="theme-toggle" type="button" aria-label="切换明暗主题" title="切换明暗主题">
           <span aria-hidden="true">◐</span>
         </button>

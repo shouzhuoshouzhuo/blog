@@ -1,0 +1,27 @@
+---
+layout: default
+title: "主题索引"
+permalink: /topics/
+---
+
+{% assign articles = site.pages | where_exp: "item", "item.tags" | sort: "date" | reverse %}
+
+<section class="topics-index-hero">
+  <p class="eyebrow">EDITORIAL DESKS / 04</p>
+  <h1>沿着主题，<br><em>进入问题深处。</em></h1>
+  <p>文章会更新，工具会变化；主题把分散经验组织成一条可以继续探索的路径。</p>
+</section>
+<section class="topics-index-list" aria-label="全部主题">
+  {% for topic in site.data.topics %}
+    {% assign related_count = 0 %}
+    {% for article in articles %}{% if article.topics contains topic.id %}{% assign related_count = related_count | plus: 1 %}{% endif %}{% endfor %}
+    <article>
+      <a class="card-link" href="{{ '/topics/' | append: topic.id | append: '/' | relative_url }}" aria-label="进入{{ topic.title }}主题"></a>
+      <span class="topics-index-number">{{ topic.number }}</span>
+      <span class="topics-index-mark" aria-hidden="true">{{ topic.mark }}</span>
+      <div><small>{{ topic.eyebrow }}</small><h2>{{ topic.title }}</h2><p>{{ topic.description }}</p></div>
+      <span class="topics-index-count">{{ related_count }} NOTES</span>
+      <span class="topics-index-arrow" aria-hidden="true">↗</span>
+    </article>
+  {% endfor %}
+</section>
