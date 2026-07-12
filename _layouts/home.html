@@ -15,6 +15,23 @@ layout: default
   </div>
 </section>
 
+<section class="skill-feature" aria-labelledby="skill-feature-title">
+  <div class="skill-feature-head">
+    <p class="eyebrow">PERSONAL TOOLKIT / 01</p>
+    <a href="{{ '/skills/' | relative_url }}">浏览全部 Skills <span aria-hidden="true">↗</span></a>
+  </div>
+  <a class="skill-feature-card" href="{{ '/skills/personal-blog-writing/' | relative_url }}">
+    <span class="skill-orbit" aria-hidden="true"><i>写</i></span>
+    <span class="skill-feature-copy">
+      <small>CODEX SKILL · EDITORIAL WORKFLOW</small>
+      <strong id="skill-feature-title">个人博客撰写</strong>
+      <span>从对话中提炼可复现经验，经过写作确认与发布审批，再自动交付到个人博客。</span>
+    </span>
+    <span class="skill-command" aria-label="技能调用指令">$personal-blog-writing</span>
+    <span class="skill-feature-arrow" aria-hidden="true">→</span>
+  </a>
+</section>
+
 {% assign articles = site.pages | where_exp: "item", "item.tags" | sort: "date" | reverse %}
 
 <section class="catalog" aria-labelledby="catalog-title">
@@ -54,4 +71,3 @@ layout: default
   </div>
   <p class="no-results" id="no-results" hidden>没有找到匹配的文章，换个关键词试试。</p>
 </section>
-

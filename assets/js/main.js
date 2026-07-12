@@ -32,6 +32,15 @@
     }
   });
 
+  document.querySelectorAll("[data-copy]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(button.dataset.copy);
+      const original = button.textContent;
+      button.textContent = "已复制";
+      window.setTimeout(() => (button.textContent = original), 1400);
+    });
+  });
+
   const content = document.querySelector("#post-content");
   const toc = document.querySelector("#toc");
   if (content && toc) {
@@ -60,4 +69,3 @@
     });
   }
 })();
-
