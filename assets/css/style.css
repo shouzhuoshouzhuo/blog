@@ -201,6 +201,16 @@ button, input { font: inherit; }
   font: 400 1.03rem/1.9 var(--serif);
 }
 
+.hero-intro a {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: .9em;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+
+.hero-intro a:hover { color: var(--ink); }
+
 .hero-stamp {
   align-self: center;
   justify-self: end;
