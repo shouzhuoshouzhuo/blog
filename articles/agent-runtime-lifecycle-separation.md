@@ -242,7 +242,7 @@ Runtime → Supervisor
 
 ## 七、执行结果如何转换成生命周期状态
 
-下面这个小实验把两类信息并排展示：Runtime 产生的是“执行事实”，例如进度、结果和异常；Supervisor 才把这些事实与截止时间、用户意图结合，写入唯一的 `TaskRecord`。选择一种结局，可以观察消息如何越过边界，以及生命周期状态在哪里变化。
+下面这个小实验把两类信息并排展示：Runtime 产生的是“执行事实”，例如进度、结果和异常；Supervisor 才把这些事实与截止时间、用户意图结合，写入唯一的 `TaskRecord`。先选择一种结局，再逐步推进，可以观察消息如何越过边界，以及生命周期状态在哪里变化。
 
 <section class="runtime-lab" data-runtime-lab aria-labelledby="runtime-lab-title">
   <div class="runtime-lab__header">
@@ -250,7 +250,7 @@ Runtime → Supervisor
       <p class="runtime-lab__eyebrow">交互实验</p>
       <p class="runtime-lab__title" id="runtime-lab-title"><strong>从执行事实到生命周期状态</strong></p>
     </div>
-    <p class="runtime-lab__hint">约每 500ms 推进一步；切换场景会重新开始。</p>
+    <p class="runtime-lab__hint">选择场景，再由你逐步推进；切换场景会重新开始。</p>
   </div>
 
   <div class="runtime-lab__controls" role="group" aria-label="选择任务结局">
@@ -258,6 +258,11 @@ Runtime → Supervisor
     <button type="button" data-scenario="timeout" aria-pressed="false">总超时</button>
     <button type="button" data-scenario="cancel" aria-pressed="false">用户取消</button>
     <button type="button" data-scenario="error" aria-pressed="false">Runtime 异常</button>
+  </div>
+
+  <div class="runtime-lab__step-controls">
+    <p data-step-count>尚未选择场景</p>
+    <button type="button" data-next-step disabled>下一步</button>
   </div>
 
   <div class="runtime-lab__planes">
@@ -306,7 +311,7 @@ Runtime → Supervisor
 
   <div class="runtime-lab__readout">
     <span class="runtime-lab__pulse" aria-hidden="true"></span>
-    <p data-runtime-lab-live aria-live="polite">选择一个场景，观察状态迁移。</p>
+    <p data-runtime-lab-live aria-live="polite">选择一个场景，再点击“下一步”。</p>
   </div>
   <noscript><p class="runtime-lab__noscript">JavaScript 已关闭。下方状态机、伪代码与文字仍完整说明四条转换路径。</p></noscript>
 </section>

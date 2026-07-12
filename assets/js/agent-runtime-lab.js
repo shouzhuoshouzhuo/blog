@@ -29,19 +29,18 @@
     ],
   };
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
   document.querySelectorAll("[data-runtime-lab]").forEach((lab) => {
     const buttons = [...lab.querySelectorAll("[data-scenario]")];
     const status = lab.querySelector("[data-task-status]");
     const result = lab.querySelector("[data-task-result]");
     const error = lab.querySelector("[data-task-error]");
     const live = lab.querySelector("[data-runtime-lab-live]");
-    let timers = [];
+    const nextButton = lab.querySelector("[data-next-step]");
+    const stepCount = lab.querySelector("[data-step-count]");
+    let selectedScenario = null;
+    let stepIndex = 0;
 
     const clearRun = () => {
-      timers.forEach(window.clearTimeout);
-      timers = [];
       lab.classList.remove("is-running");
       lab.querySelectorAll(".is-active").forEach((element) => element.classList.remove("is-active"));
     };
@@ -57,21 +56,35 @@
       lab.classList.toggle("is-running", !step.final);
     };
 
-    const run = (name) => {
+    const selectScenario = (name) => {
       clearRun();
+      selectedScenario = name;
+      stepIndex = 0;
       buttons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.scenario === name)));
       status.textContent = "PENDING";
       result.textContent = "—";
       error.textContent = "—";
-      live.textContent = "场景已重置，准备提交任务。";
-      lab.classList.add("is-running");
-
-      const delay = reducedMotion.matches ? 80 : 500;
-      scenarios[name].forEach((step, index) => {
-        timers.push(window.setTimeout(() => render(step), index * delay));
-      });
+      live.textContent = "场景已选择。点击“下一步”提交任务。";
+      stepCount.textContent = `步骤 0/${scenarios[name].length}`;
+      nextButton.disabled = false;
+      nextButton.textContent = "下一步";
     };
 
-    buttons.forEach((button) => button.addEventListener("click", () => run(button.dataset.scenario)));
+    const advance = () => {
+      if (!selectedScenario) return;
+      const steps = scenarios[selectedScenario];
+      const step = steps[stepIndex];
+      if (!step) return;
+      render(step);
+      stepIndex += 1;
+      stepCount.textContent = `步骤 ${stepIndex}/${steps.length}`;
+      if (stepIndex === steps.length) {
+        nextButton.disabled = true;
+        nextButton.textContent = "已完成";
+      }
+    };
+
+    buttons.forEach((button) => button.addEventListener("click", () => selectScenario(button.dataset.scenario)));
+    nextButton.addEventListener("click", advance);
   });
 })();

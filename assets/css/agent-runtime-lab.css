@@ -2,6 +2,9 @@
   --lab-control: var(--accent);
   --lab-runtime: #b34f7d;
   --lab-bridge: #208f82;
+  --lab-dark-bg: #14241f;
+  --lab-dark-text: #f5f3ea;
+  --lab-dark-muted: #c9d2cd;
   margin: 2rem 0;
   padding: clamp(1rem, 3vw, 1.5rem);
   border: 1px solid var(--line);
@@ -42,6 +45,35 @@
   margin: 1.2rem 0;
 }
 
+.runtime-lab__step-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: -.35rem 0 1.2rem;
+  padding: .65rem .75rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+}
+
+.runtime-lab__step-controls p { margin: 0; color: var(--muted); font-size: .8rem; }
+.runtime-lab__step-controls button {
+  min-width: 7rem;
+  padding: .55rem .9rem;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: #fff;
+  background: var(--accent);
+  font: inherit;
+  font-size: .84rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+.runtime-lab__step-controls button:hover:not(:disabled) { filter: brightness(1.08); }
+.runtime-lab__step-controls button:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 2px; }
+.runtime-lab__step-controls button:disabled { border-color: var(--line); color: var(--muted); background: transparent; cursor: not-allowed; opacity: .8; }
+
 .runtime-lab__controls button {
   appearance: none;
   padding: .55rem .85rem;
@@ -58,7 +90,7 @@
 
 .runtime-lab__controls button:hover { transform: translateY(-1px); }
 .runtime-lab__controls button:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 2px; }
-.runtime-lab__controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--paper); background: var(--accent); }
+.runtime-lab__controls button[aria-pressed="true"] { border-color: var(--accent); color: #fff; background: var(--accent); }
 
 .runtime-lab__planes {
   display: grid;
@@ -87,20 +119,21 @@
   margin-top: .9rem;
   padding: .85rem;
   border-radius: 10px;
-  background: var(--code);
+  color: var(--lab-dark-text);
+  background: var(--lab-dark-bg);
 }
 
 .runtime-lab__record > span,
-.runtime-lab__workflow > span { display: block; color: var(--muted); font-size: .75rem; }
+.runtime-lab__workflow > span { display: block; color: var(--lab-dark-muted); font-size: .75rem; }
 .runtime-lab__record > strong { display: block; margin: .3rem 0 .65rem; color: var(--lab-control); font-family: var(--mono, ui-monospace, monospace); font-size: 1.05rem; overflow-wrap: anywhere; }
 .runtime-lab__record.is-active { box-shadow: inset 0 0 0 2px var(--lab-control); }
 .runtime-lab__record dl { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin: 0; }
 .runtime-lab__record dl div { min-width: 0; }
-.runtime-lab__record dt { color: var(--muted); font: .68rem var(--mono, ui-monospace, monospace); }
+.runtime-lab__record dt { color: var(--lab-dark-muted); font: .68rem var(--mono, ui-monospace, monospace); }
 .runtime-lab__record dd { margin: .15rem 0 0; font-size: .75rem; overflow-wrap: anywhere; }
 
 .runtime-lab__workflow { text-align: center; }
-.runtime-lab__workflow small { display: block; margin-top: .35rem; color: var(--muted); }
+.runtime-lab__workflow small { display: block; margin-top: .35rem; color: var(--lab-dark-text); }
 .runtime-lab__workflow.is-active { box-shadow: inset 0 0 0 2px var(--lab-runtime); }
 .runtime-lab__boundary { margin-top: .75rem !important; color: var(--lab-runtime); font-size: .76rem; font-weight: 750; text-align: center; }
 
@@ -111,15 +144,15 @@
   padding: .45rem .55rem;
   border: 1px dashed var(--line);
   border-radius: 7px;
-  color: var(--muted);
-  background: var(--code);
+  color: var(--lab-dark-muted);
+  background: var(--lab-dark-bg);
   font: .72rem var(--mono, ui-monospace, monospace);
   overflow-wrap: anywhere;
   transition: color .2s ease, border-color .2s ease, background .2s ease, transform .2s ease;
 }
 .runtime-lab__triggers span { border-style: solid; font-size: .68rem; }
 .runtime-lab__triggers span.is-active { border-color: var(--lab-control); color: var(--ink); background: color-mix(in srgb, var(--lab-control) 13%, var(--paper)); transform: scale(1.025); }
-.runtime-lab__events span.is-active { border-style: solid; border-color: var(--lab-bridge); color: var(--ink); background: color-mix(in srgb, var(--lab-bridge) 13%, var(--paper)); transform: scale(1.025); }
+.runtime-lab__events span.is-active { border-style: solid; border-color: #65d5c6; color: #fff; background: #17685f; transform: scale(1.025); }
 .runtime-lab__legend { margin-top: .7rem !important; color: var(--muted); font-size: .65rem; }
 
 .runtime-lab__readout {
@@ -127,7 +160,8 @@
   margin-top: .9rem;
   padding: .75rem .85rem;
   border-radius: 10px;
-  background: var(--code);
+  color: var(--lab-dark-text);
+  background: var(--lab-dark-bg);
   font-size: .84rem;
 }
 .runtime-lab__pulse { width: .65rem; height: .65rem; flex: 0 0 auto; border-radius: 50%; background: var(--muted); }
@@ -149,6 +183,8 @@
   .runtime-lab__controls button { width: 100%; }
   .runtime-lab__events { grid-template-columns: 1fr; }
   .runtime-lab__record dl { grid-template-columns: 1fr; }
+  .runtime-lab__step-controls { align-items: stretch; flex-direction: column; }
+  .runtime-lab__step-controls button { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
