@@ -1,0 +1,22 @@
+---
+layout: default
+---
+
+<section class="author-page" aria-labelledby="author-title">
+  <header class="author-header">
+    <div class="author-monogram" aria-hidden="true">拙</div>
+    <div><p class="eyebrow">关于作者</p><h1 id="author-title">守拙</h1><p class="author-handle">{{ site.author }}</p><p class="author-affiliation">东南大学 · 研究生</p></div>
+  </header>
+  <div class="author-bio">{{ content }}</div>
+  <nav class="author-contact" aria-label="作者联系方式">
+    <a href="mailto:2965908658@qq.com"><span>邮箱</span>2965908658@qq.com</a>
+    <a href="https://github.com/{{ site.author }}"><span>GitHub</span>{{ site.author }}</a>
+  </nav>
+  {% assign articles = site.pages | where_exp: "item", "item.tags" | sort: "date" | reverse %}
+  <section class="author-posts" aria-labelledby="author-posts-title">
+    <h2 id="author-posts-title">最近的文章</h2>
+    {% for article in articles limit: 3 %}
+    <a href="{{ article.url | relative_url }}"><time datetime="{{ article.date | date_to_xmlschema }}">{{ article.date | date: '%Y.%m.%d' }}</time><span>{{ article.title }}</span></a>
+    {% endfor %}
+  </section>
+</section>

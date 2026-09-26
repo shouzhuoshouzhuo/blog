@@ -1,7 +1,7 @@
 ---
 layout: article
 title: "让执行归执行，让状态归状态：Agent Runtime 的生命周期分层"
-date: 2026-07-12
+date: 2026-08-18
 tags:
   - Agent Runtime
   - 异步架构

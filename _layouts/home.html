@@ -2,119 +2,59 @@
 layout: default
 ---
 
-<section class="hero">
-  <div class="hero-index" aria-hidden="true">01—∞</div>
-  <div class="hero-copy">
-    <p class="eyebrow">A LIVING INDEX OF PRACTICE</p>
-    <h1>欢迎光临，<br><em>我的主页。</em></h1>
-    <p class="hero-intro">在这里，我会记录一些自己的思考，欢迎批评指正。<br><a href="mailto:2965908658@qq.com">email: 2965908658@qq.com</a></p>
-  </div>
-  <div class="hero-stamp" aria-hidden="true">
-    <span>持续记录</span>
-    <strong>FIELD<br>NOTES</strong>
-  </div>
-</section>
-
 {% assign articles = site.pages | where_exp: "item", "item.tags" | sort: "date" | reverse %}
+{% assign latest = articles | first %}
 
-<section class="topic-shelf" aria-labelledby="topic-shelf-title">
-  <div class="topic-shelf-head">
-    <div>
-      <p class="eyebrow">EDITORIAL DESKS / 04</p>
-      <h2 id="topic-shelf-title">主题专题架</h2>
+<section class="home-intro" aria-labelledby="intro-title">
+  <div class="intro-copy">
+    <p class="eyebrow">shouzhuoshouzhuo</p>
+    <h1 id="intro-title">你好，我是<em>守拙。</em></h1>
+    <p class="intro-description">东南大学研究生，关注 AI 应用开发。<br>这里记录我的学习、开发和日常思考。</p>
+    <a class="intro-link" href="{{ '/about/' | relative_url }}">关于我</a>
+  </div>
+  {% if latest %}
+  <aside class="reading-note" aria-label="随手翻一篇">
+    <div class="reading-note-front">
+    <div class="reading-note-head"><span>随手翻一篇</span><span class="note-bookmark" aria-hidden="true"></span></div>
+    <div id="random-note" aria-live="polite" aria-atomic="true">
+      <p class="reading-note-date" id="random-date">{{ latest.date | date: '%Y.%m.%d' }}</p>
+      <a id="random-article" href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
     </div>
-    <p>沿着一个问题持续深挖，<br>直到经验长成方法。</p>
-  </div>
-
-  <div class="topic-grid">
-    {% for topic in site.data.topics %}
-      {% assign primary_count = 0 %}
-      {% for article in articles %}
-        {% if article.primary_topic == topic.id %}{% assign primary_count = primary_count | plus: 1 %}{% endif %}
-      {% endfor %}
-      <article class="topic-card topic-card--{{ forloop.index }}">
-        <div class="topic-card-top">
-          <span class="topic-card-number">{{ topic.number }}</span>
-          <span class="topic-card-eyebrow">{{ topic.eyebrow }}</span>
-          <span class="topic-card-count">{{ primary_count }} 篇主归档</span>
-        </div>
-        <div class="topic-card-main">
-          <span class="topic-card-mark" aria-hidden="true">{{ topic.mark }}</span>
-          <div>
-            <h3><a href="{{ '/topics/' | append: topic.id | append: '/' | relative_url }}">{{ topic.title }}</a></h3>
-            <p>{{ topic.statement }}</p>
-          </div>
-        </div>
-        <div class="topic-card-notes">
-          {% assign shown = 0 %}
-          {% for article in articles %}
-            {% if article.primary_topic == topic.id and shown < 2 %}
-              <a href="{{ article.url | relative_url }}"><time>{{ article.date | date: '%m.%d' }}</time><span>{{ article.title }}</span></a>
-              {% assign shown = shown | plus: 1 %}
-            {% endif %}
-          {% endfor %}
-          {% if shown == 0 %}<span class="topic-awaiting">等待第一篇手记</span>{% endif %}
-        </div>
-        <a class="topic-card-enter" href="{{ '/topics/' | append: topic.id | append: '/' | relative_url }}" aria-label="进入{{ topic.title }}主题">进入主题 <span aria-hidden="true">↗</span></a>
-      </article>
-    {% endfor %}
-  </div>
-  <a class="topic-index-link" href="{{ '/topics/' | relative_url }}">查看完整主题索引 <span aria-hidden="true">→</span></a>
+    <div class="reading-note-foot"><span>从这里开始读</span><button type="button" id="shuffle-article" hidden><span aria-hidden="true">↻</span> 换一篇</button></div>
+    </div>
+  </aside>
+  {% endif %}
 </section>
 
-<section class="skill-feature" aria-labelledby="skill-feature-title">
-  <div class="skill-feature-head">
-    <p class="eyebrow">PERSONAL TOOLKIT / 01</p>
-    <a href="{{ '/skills/' | relative_url }}">浏览全部 Skills <span aria-hidden="true">↗</span></a>
-  </div>
-  <a class="skill-feature-card" href="{{ '/skills/personal-blog-writing/' | relative_url }}">
-    <span class="skill-orbit" aria-hidden="true"><i>写</i></span>
-    <span class="skill-feature-copy">
-      <small>CODEX SKILL · EDITORIAL WORKFLOW</small>
-      <strong id="skill-feature-title">个人博客撰写</strong>
-      <span>从对话中提炼可复现经验，经过写作确认与发布审批，再自动交付到个人博客。</span>
-    </span>
-    <span class="skill-command" aria-label="技能调用指令">$personal-blog-writing</span>
-    <span class="skill-feature-arrow" aria-hidden="true">→</span>
-  </a>
-</section>
-
-<section class="catalog" aria-labelledby="catalog-title">
+<section class="catalog" id="articles" aria-labelledby="catalog-title">
   <div class="catalog-head">
-    <div>
-      <p class="eyebrow">ARCHIVE / {{ articles.size | prepend: '0' | slice: -2, 2 }}</p>
-      <h2 id="catalog-title">全部文章</h2>
-    </div>
-    <label class="search-box">
+    <div class="catalog-heading"><h2 id="catalog-title">文章手记</h2><span class="article-total">{{ articles.size }} 篇记录</span></div>
+    <label class="search-box" hidden>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
       <span class="sr-only">搜索文章</span>
-      <input id="article-search" type="search" placeholder="搜索标题、摘要或标签…" autocomplete="off">
-      <kbd>/</kbd>
+      <input id="article-search" type="search" placeholder="搜一搜标题、标签…" autocomplete="off" aria-controls="article-list">
+      <kbd aria-hidden="true">/</kbd>
     </label>
   </div>
-
+  <p id="search-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
   <div class="article-list" id="article-list">
     {% for article in articles %}
-      {% capture topic_names %}{% for topic in site.data.topics %}{% if article.topics contains topic.id %} {{ topic.title }}{% endif %}{% endfor %}{% endcapture %}
-      <article class="article-card" data-search="{{ article.title }} {{ article.description }} {{ article.tags | join: ' ' }} {{ topic_names | strip }}">
-        <a class="card-link" href="{{ article.url | relative_url }}" aria-label="阅读《{{ article.title }}》"></a>
-        <div class="card-number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+      <article class="article-card" data-search="{{ article.title | escape }} {{ article.description | escape }} {{ article.tags | join: ' ' | escape }}">
+        <div class="card-number" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
         <div class="card-body">
           <div class="card-meta">
             <time datetime="{{ article.date | date_to_xmlschema }}">{{ article.date | date: '%Y.%m.%d' }}</time>
-            <span>{{ article.content | strip_html | number_of_words }} 字</span>
-            {% for topic in site.data.topics %}{% if topic.id == article.primary_topic %}<a class="card-topic" href="{{ '/topics/' | append: topic.id | append: '/' | relative_url }}">{{ topic.title }}</a>{% endif %}{% endfor %}
           </div>
-          <h3>{{ article.title }}</h3>
+          <h3><a class="article-title" href="{{ article.url | relative_url }}">{{ article.title }}</a></h3>
           <p>{{ article.description | default: article.excerpt | strip_html | truncate: 110 }}</p>
-          <div class="tags" aria-label="文章标签">
-            {% for tag in article.tags %}<span>{{ tag }}</span>{% endfor %}
-          </div>
+          <div class="tags" aria-label="文章标签">{% for tag in article.tags limit: 3 %}<span>{{ tag }}</span>{% endfor %}</div>
         </div>
-        <div class="card-arrow" aria-hidden="true">↗</div>
+        <span class="card-read" aria-hidden="true">阅读</span>
       </article>
     {% else %}
       <div class="empty-state">第一篇手记正在路上。</div>
     {% endfor %}
   </div>
-  <p class="no-results" id="no-results" hidden>没有找到匹配的文章，换个关键词试试。</p>
+  <div class="no-results" id="no-results" hidden><span aria-hidden="true">∅</span><h3>暂时没有找到这篇手记</h3><p>试试其他关键词，或看看全部文章。</p><button type="button" id="reset-search">清除搜索</button></div>
+  <div class="catalog-end"><span>共 {{ articles.size }} 篇文章</span><span aria-hidden="true">· · ·</span></div>
 </section>
