@@ -1,0 +1,47 @@
+/* Article-local diagrams: paper, ink, and a restrained rust accent. */
+.post-content .rag-diagram {
+  margin: 2.3rem 0;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  background: var(--panel);
+  font-family: var(--sans);
+  overflow-wrap: anywhere;
+}
+.rag-diagram *, .rag-diagram *::before, .rag-diagram *::after { box-sizing: border-box; }
+.rag-diagram__heading { display: grid; gap: .45rem; margin-bottom: 1.4rem; }
+.rag-diagram__heading > span, .rag-label { color: var(--accent); font: 600 .72rem/1.6 var(--sans); letter-spacing: .06em; }
+.rag-diagram__heading > strong { font: 700 1.25rem/1.6 var(--serif); }
+.rag-architecture { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; }
+.rag-lane { display: flex; flex-direction: column; min-width: 0; gap: .65rem; }
+.rag-node { display: grid; gap: .3rem; padding: 1rem; border: 1px solid var(--line); background: var(--paper); flex: 1; align-content: center; }
+.rag-node strong, .rag-flow strong, .rag-timeline strong, .rag-life strong { font-size: .9rem; line-height: 1.6; }
+.rag-node span, .rag-flow li > span, .rag-timeline li div > span { display: block; font-size: .78rem; line-height: 1.8; color: var(--muted); }
+.rag-node--accent { border-left: 3px solid var(--accent); }
+.rag-lane--version .rag-node { border-style: dashed; }
+.rag-arrow { text-align: center; font-size: .72rem; line-height: 1.8; color: var(--muted); }
+.post-content .rag-diagram figcaption { margin-top: 1.2rem; padding-top: .85rem; border-top: 1px solid var(--line); color: var(--muted); font: 400 .76rem/1.8 var(--sans); text-align: left; }
+.post-content .rag-flow, .post-content .rag-timeline { list-style: none; padding: 0; margin: 0; }
+.post-content .rag-flow { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; counter-reset: cache-step; }
+.post-content .rag-flow li { margin: 0; padding: 1rem 1rem 1rem 2.8rem; position: relative; background: var(--paper); border: 1px solid var(--line); }
+.rag-flow li::before { counter-increment: cache-step; content: counter(cache-step) "↓"; position: absolute; left: .7rem; top: 1rem; color: var(--accent); font: 600 .85rem/1.6 var(--mono); }
+.rag-note { margin-top: 1rem; padding-left: .8rem; border-left: 2px solid var(--accent); color: var(--muted); font-size: .78rem; line-height: 1.9; }
+.post-content .rag-timeline li { display: grid; grid-template-columns: 6.8rem 1fr; gap: 1rem; position: relative; margin: 0; padding: 0 0 1.35rem 1.2rem; border-left: 1px solid var(--accent); }
+.post-content .rag-timeline li:last-child { padding-bottom: 0; }
+.rag-timeline li::before { content: ""; position: absolute; left: -4px; top: .5rem; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.rag-actor { color: var(--accent); font-size: .75rem; line-height: 2; }
+.rag-timeline__recovery div { padding: .6rem .8rem; border: 1px dashed var(--line); }
+.rag-lifecycle { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.rag-life { border-top: 1px solid var(--accent); padding: .9rem; background: var(--paper); }
+.rag-life .rag-label { display: block; margin-bottom: .45rem; }
+.post-content .rag-life p { margin: .45rem 0 0; color: var(--muted); font: 400 .78rem/1.8 var(--sans); }
+@media (max-width: 600px) {
+  .post-content .rag-diagram { padding: 1rem; margin: 1.8rem 0; }
+  .rag-architecture, .post-content .rag-flow, .rag-lifecycle { grid-template-columns: minmax(0, 1fr); }
+  .rag-lane--version { padding-top: 1rem; border-top: 1px dashed var(--line); }
+  .post-content .rag-timeline li { grid-template-columns: minmax(0, 1fr); gap: .25rem; }
+  .rag-diagram__heading > strong { font-size: 1.1rem; }
+}
+@media print {
+  .post-content .rag-diagram { break-inside: avoid; background: none; }
+}
